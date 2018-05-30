@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+      <div>{{getQueryUserInfo?'':''}}</div>
     <h1>{{ msg }}</h1>
     <!--<h2>Essential Links</h2>-->
     <!--<ul>-->
@@ -24,7 +25,53 @@ export default {
     name: 'HelloWorld',
     data () {
         return {
-            msg: 'Welcome to Baho'
+            msg: 'Welcome to Baho',
+            queryUserInfoPayload: {
+                key: 'queryUserInfo',
+                url: this.$store.state.baseServiceUrl + '/login/getLoginUser',
+                postData: {}
+            }
+        }
+    },
+    created () {
+        this.ini()
+    },
+    watch: {
+        // moneyVal (curVal, oldVal) {
+        //   if (curVal > 0) {
+        //   }
+        // }
+    },
+    computed: {
+        getQueryUserInfo () {
+            var that = this
+            if (this.$store.state.key.queryUserInfo) {
+                if (this.$store.state.key.queryUserInfo.code === 200) {
+                    // this.queryUserInfoCommit()
+                } else {
+                    that.$router.push('/Login')
+                }
+            }
+            return this.$store.state.key.loginOut
+        }
+    },
+    updated () {
+        // var windowHeight = parseInt($(window).height())
+    },
+    destroyed () {
+        // this.$store.commit('appSideSet', {name: 'all', show: true})
+    },
+    mounted () {
+        // var windowHeight = parseInt($(window).height())
+    },
+    methods: {
+        ini: function () {
+            // j
+            this.queryUserInfoCommit()
+        },
+        // 查询用户信息
+        queryUserInfoCommit: function () {
+            this.$store.commit('callservice', this.queryUserInfoPayload)
         }
     }
 }

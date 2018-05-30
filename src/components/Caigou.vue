@@ -40,9 +40,10 @@
                     <div class="listItemCnt"><div class="listItemCntCell">{{item.orderBill.lastModified?item.orderBill.lastModified.split(' ')[0]:''}}</div></div>
                     <div class="listItemCnt" v-for="iteminner in item.procedures" v-bind:key="iteminner.id">
                         <div class="listItemCntCell">
-                            <!--v-on:change="iptChange($event)"-->
-                            <input class="mydateipt" type="text" v-if="iteminner.deadline?true:false" v-bind:id="'id_' + iteminner.id" v-bind:value="iteminner.deadline?iteminner.deadline.split(' ')[0]:''" v-on:click="selectDate($event)" placeholder="请选择日期" />
-                            <input class="mydateipt jjj" type="text" v-if="iteminner.deadline?false:true" v-bind:id="'id_' + iteminner.id" v-bind:value="iteminner.deadline?iteminner.deadline.split(' ')[0]:''" v-on:click="selectDate($event)" placeholder="请选择日期" />
+                            <!--v-on:change="iptChange($event)"  v-on:click="selectDate($event)"   v-bind:value="iteminner.deadline?iteminner.deadline.split(' ')[0]:''"-->
+                            {{iteminner.deadline?iteminner.deadline.split(' ')[0]:''}}
+                            <!--<input class="mydateipt" type="text" v-if="iteminner.deadline?true:false" v-bind:id="'id_' + iteminner.id" v-bind:value="iteminner.deadline?iteminner.deadline.split(' ')[0]:''" v-on:click="selectDate($event)" placeholder="请选择日期" />-->
+                            <input class="mydateipt jjj" type="text" v-if="iteminner.deadline?false:true" v-bind:id="'id_' + iteminner.id" placeholder="请选择日期" />
                         </div>
                     </div>
                 </div>
@@ -151,6 +152,7 @@ export default {
             var that = this
             if (that.$store.state.key.updateDateForProcedures) {
                 if (that.$store.state.key.updateDateForProcedures.code === 200) {
+                    that.$store.commit('callservice', that.caigouListPayload)
                     console.log(that.$store.state.key.updateDateForProcedures.msg)
                     // console.log(that.itemArr2)
                 }
@@ -195,11 +197,11 @@ export default {
                 elem: this,
                 // trigger: 'click',
                 done: (value) => {
-                    that.selectedVal = value
-                    var currentidyuan = this.id
-                    var currentid = currentidyuan.split('_')[1]
+                    // that.selectedVal = value
+                    // var currentidyuan = this.id
+                    var currentid = this.id.split('_')[1]
                     // console.log(value)
-                    // that.dateuploadcommit(value, currentid)
+                    that.dateuploadcommit(value, currentid)
                 }
             })
         })
